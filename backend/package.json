@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "pdfmake": "^0.2.7",
+    "qrcode": "^1.5.3",
+    "react-colorful": "^5.6.1",
+    "roboto-font": "^0.1.0"
+  },
+  "devDependencies": {
+    "@testing-library/cypress": "^10.0.3",
+    "cypress": "^14.1.0",
+    "nodemon": "^3.1.9"
+  }
+}

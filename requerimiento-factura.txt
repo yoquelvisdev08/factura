@@ -1,0 +1,35 @@
+= SPEC-001: Generador Automático de Facturas y Recibos
+:sectnums:
+:toc:
+
+
+== Background
+
+Muchos freelancers y pequeñas empresas necesitan generar facturas rápidamente sin pagar por software costoso. Un sistema gratuito que permita la generación de facturas personalizadas en PDF y la gestión de clientes ayudaría a simplificar este proceso.
+
+== Requirements
+
+El sistema debe permitir a los usuarios:
+
+=== Must Have
+
+* Registro e inicio de sesión para gestionar facturas y clientes.
+* Creación y organización de facturas en "carpetas" asociadas a clientes.
+* Generación de facturas en PDF con múltiples plantillas personalizables.
+* Edición de logotipo, colores y formato de las facturas.
+* Descarga de facturas sin marca de agua.
+* Dashboard con resumen de facturas generadas y clientes.
+* Opción de generar facturas rápidas sin necesidad de iniciar sesión.
+* Soporte para firma digital en las facturas.
+* Formularios específicos para la generación de facturas rápidas y facturas elaboradas.
+
+=== Should Have
+
+* Búsqueda y filtrado de facturas por cliente o fecha.
+* Exportación de reportes en CSV.
+* Soporte para distintos idiomas y monedas.
+
+=== Could Have
+
+* Generación de presupuestos a partir de las facturas.
+
