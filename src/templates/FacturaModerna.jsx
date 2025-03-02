@@ -7,6 +7,7 @@ Font.register({
   fonts: [
     { src: 'https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrFJA.ttf', fontWeight: 400 },
     { src: 'https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7V1s.ttf', fontWeight: 700 },
+    { src: 'https://fonts.gstatic.com/s/poppins/v20/pxiGyp8kv8JHgFVrJJLucXtF.ttf', fontWeight: 400, fontStyle: 'italic' }
   ]
 });
 
