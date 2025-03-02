@@ -2,18 +2,25 @@ const PdfPrinter = require('pdfmake');
 const QRCode = require('qrcode');
 const path = require('path');
 
+// Configuración de fuentes
 const fonts = {
-  Helvetica: {
-    normal: 'Helvetica',
-    bold: 'Helvetica-Bold',
-    italics: 'Helvetica-Oblique',
-    bolditalics: 'Helvetica-BoldOblique'
+  Roboto: {
+    normal: path.join(__dirname, '../../node_modules/roboto-font/fonts/Roboto/roboto-regular-webfont.ttf'),
+    bold: path.join(__dirname, '../../node_modules/roboto-font/fonts/Roboto/roboto-bold-webfont.ttf'),
+    italics: path.join(__dirname, '../../node_modules/roboto-font/fonts/Roboto/roboto-italic-webfont.ttf'),
+    bolditalics: path.join(__dirname, '../../node_modules/roboto-font/fonts/Roboto/roboto-bolditalic-webfont.ttf')
   }
 };
 
 const generateInvoicePDF = async (req, res) => {
   try {
     const formData = req.body;
+    
+    // Validación básica de datos
+    if (!formData || !formData.items || !Array.isArray(formData.items)) {
+      throw new Error('Datos de factura inválidos');
+    }
+
     const theme = formData.theme || {
       primaryColor: '#2962ff',
       secondaryColor: '#1a237e',
@@ -26,22 +33,40 @@ const generateInvoicePDF = async (req, res) => {
     
     const printer = new PdfPrinter(fonts);
 
-    // Generar QR code
-    const qrCodeData = await QRCode.toDataURL(JSON.stringify({
-      emisor: formData.empresaNombre,
-      rncEmisor: formData.empresaRNC,
-      cliente: formData.clienteNombre,
-      rncCliente: formData.clienteRNC,
-      numeroFactura: formData.numeroFactura,
-      fecha: formData.fecha,
-      total: formData.total
-    }));
+    // Generar QR code con manejo de errores
+    let qrCodeData;
+    try {
+      qrCodeData = await QRCode.toDataURL(JSON.stringify({
+        emisor: formData.empresaNombre,
+        rncEmisor: formData.empresaRNC,
+        cliente: formData.clienteNombre,
+        rncCliente: formData.clienteRNC,
+        numeroFactura: formData.numeroFactura,
+        fecha: formData.fecha,
+        total: formData.total
+      }));
+    } catch (qrError) {
+      console.error('Error generando QR:', qrError);
+      qrCodeData = null;
+    }
+
+    // Validar y procesar imágenes
+    const empresaLogo = formData.empresaLogo ? {
+      image: formData.empresaLogo,
+      width: 150,
+      fit: [150, 150]
+    } : null;
+
+    const empresaFirma = formData.empresaFirma ? {
+      image: formData.empresaFirma,
+      width: 150
+    } : null;
 
     const docDefinition = {
       pageSize: 'A4',
       pageMargins: [40, 40, 40, 60],
       defaultStyle: {
-        font: 'Helvetica',
+        font: 'Roboto',
         fontSize: theme.bodyFontSize,
         lineHeight: 1.2,
         color: theme.textColor
@@ -79,12 +104,7 @@ const generateInvoicePDF = async (req, res) => {
         // Encabezado con logo y datos del emisor
         {
           columns: [
-            formData.empresaLogo ? {
-              image: formData.empresaLogo,
-              width: 150,
-              fit: [150, 150],
-              margin: [0, 0, 20, 0]
-            } : {},
+            empresaLogo,
             {
               stack: [
                 { 
@@ -215,15 +235,17 @@ const generateInvoicePDF = async (req, res) => {
             headerRows: 1,
             widths: ['*', 'auto', 'auto', 'auto', 'auto'],
             body: [
+              // Encabezado de la tabla
               [
-                { text: 'Descripción', style: 'tableHeader', fillColor: theme.primaryColor },
-                { text: 'Cantidad', style: 'tableHeader', fillColor: theme.primaryColor },
-                { text: 'Precio Unit.', style: 'tableHeader', fillColor: theme.primaryColor },
-                { text: 'ITBIS', style: 'tableHeader', fillColor: theme.primaryColor },
-                { text: 'Total', style: 'tableHeader', fillColor: theme.primaryColor }
+                { text: 'Descripción', style: 'tableHeader' },
+                { text: 'Cantidad', style: 'tableHeader' },
+                { text: 'Precio Unit.', style: 'tableHeader' },
+                { text: 'ITBIS', style: 'tableHeader' },
+                { text: 'Total', style: 'tableHeader' }
               ],
+              // Filas de datos
               ...formData.items.map((item, index) => [
-                item.descripcion,
+                { text: item.descripcion },
                 { text: item.cantidad, alignment: 'center' },
                 { text: formatCurrency(item.precioUnitario, formData.moneda), alignment: 'right' },
                 { text: `${item.impuesto}%`, alignment: 'right' },
@@ -235,11 +257,31 @@ const generateInvoicePDF = async (req, res) => {
                   alignment: 'right',
                   bold: true
                 }
-              ]).map((row, i) => row.map(cell => ({
-                ...cell,
-                fillColor: i % 2 === 0 ? theme.backgroundColor : `${theme.primaryColor}10`
-              })))
+              ])
             ]
+          },
+          layout: {
+            fillColor: function (rowIndex, node, columnIndex) {
+              return (rowIndex === 0) ? theme.primaryColor : 
+                     (rowIndex % 2 === 0) ? theme.backgroundColor : 
+                     `${theme.primaryColor}10`;
+            },
+            hLineWidth: function (i, node) {
+              return 0.5;
+            },
+            vLineWidth: function (i, node) {
+              return 0.5;
+            },
+            hLineColor: function (i, node) {
+              return theme.primaryColor + '30';
+            },
+            vLineColor: function (i, node) {
+              return theme.primaryColor + '30';
+            },
+            paddingLeft: function(i, node) { return 8; },
+            paddingRight: function(i, node) { return 8; },
+            paddingTop: function(i, node) { return 8; },
+            paddingBottom: function(i, node) { return 8; }
           }
         },
 
@@ -319,10 +361,10 @@ const generateInvoicePDF = async (req, res) => {
         // Pie de página con firma y QR
         {
           columns: [
-            (formData.signature || formData.empresaFirma) ? {
+            (empresaFirma || formData.empresaFirma) ? {
               stack: [
                 { 
-                  image: formData.signature || formData.empresaFirma, 
+                  image: empresaFirma || formData.empresaFirma, 
                   width: 150 
                 },
                 { 
@@ -378,6 +420,7 @@ const generateInvoicePDF = async (req, res) => {
           bold: true,
           fontSize: theme.bodyFontSize + 1,
           color: '#ffffff',
+          fillColor: theme.primaryColor,
           margin: [0, 5, 0, 5]
         },
         summary: {

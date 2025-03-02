@@ -488,9 +488,6 @@ const FacturaRapida = () => {
                 name="numeroFactura"
                 value={formData.numeroFactura}
                 onChange={handleChange}
-                InputProps={{
-                  readOnly: true,
-                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
