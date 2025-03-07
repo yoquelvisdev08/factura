@@ -1,0 +1,77 @@
+📌 MVP - Plataforma de Generación de Documentos Legales Automáticos
+
+📢 Objetivo: Los usuarios pueden generar documentos personalizados de manera automática, descargarlos en PDF y utilizarlos.
+
+1️⃣ Tipos de Documentos a Incluir en el MVP
+
+Para el MVP, seleccionamos documentos legales de uso frecuente y alta demanda, como:
+
+👨‍💻 Freelancers y Negocios
+✅ Contrato de prestación de servicios.
+✅ Acuerdo de confidencialidad (NDA).
+✅ Factura simple para freelancers.
+
+🏠 Alquiler y Propiedad
+✅ Contrato de alquiler.
+✅ Contrato de compraventa de vehículo.
+
+📜 Otros
+✅ Carta de renuncia laboral.
+✅ Permiso de uso de imagen.
+
+🔹 Futuras mejoras:
+Agregar más plantillas según demanda.
+Implementar una opción para que los usuarios creen sus propias plantillas.
+2️⃣ Estructura del MVP
+
+💡 Cada documento tendrá un formulario con "steps" para una mejor experiencia de usuario.
+
+3️⃣ Backend - Node.js + Express + Supabase
+
+📌 Tareas a realizar:
+
+Configurar un servidor con Express.
+Conectar con Supabase para usuarios y almacenamiento de documentos.
+Crear endpoints para manejar la generación de documentos.
+🎯 Prompt para Claude - Configuración del Backend
+"Crea un backend en Node.js con Express y Supabase que permita a los usuarios autenticarse y almacenar documentos generados en la base de datos. Implementa rutas para recibir datos y generar documentos en PDF."
+🔹 Generación de PDFs
+📌 Tareas a realizar:
+
+Crear un endpoint en Node.js que reciba datos y genere PDFs con PDFKit.
+Guardar el PDF en Supabase para que el usuario pueda descargarlo.
+🎯 Prompt para Claude - Generación de PDF
+
+"Desarrolla un servicio en Node.js con PDFKit para generar documentos PDF dinámicos a partir de datos enviados por el usuario. Guarda los PDFs en Supabase."
+4️⃣ Frontend - React (Next.js) + Supabase Auth
+
+📌 Tareas a realizar:
+
+Crear una app con Next.js + Tailwind CSS.
+Implementar Supabase Auth para registro e inicio de sesión.
+Diseñar una página con formularios step-by-step.
+Agregar un botón para descargar el documento generado.
+🎯 Prompt para Claude - Configuración del Frontend
+"Desarrolla una aplicación con Next.js y Tailwind CSS que tenga autenticación con Supabase y permita a los usuarios seleccionar y completar un documento legal mediante un formulario en pasos."
+5️⃣ Formularios Step-by-Step para cada Documento
+
+💡 Cada documento tendrá un flujo en pasos para mejorar la experiencia de usuario.
+
+Ejemplo: Contrato de Prestación de Servicios
+📌 Step 1 - Datos del Freelancer y Cliente
+
+Nombre del freelancer
+Nombre del cliente
+Tipo de servicio
+📌 Step 2 - Detalles del Contrato
+
+Fecha de inicio y fin
+Monto a pagar
+Método de pago
+📌 Step 3 - Condiciones y Firma
+
+Cláusulas del contrato
+Confirmación de datos
+Botón "Generar PDF"
+🎯 Prompt para Claude - Formulario de Contrato de Servicios
+"Crea un formulario en React con tres pasos para generar un contrato de prestación de servicios. Usa Zustand para manejar el estado global y Tailwind CSS para el diseño."

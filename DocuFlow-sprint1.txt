@@ -1,0 +1,110 @@
+🚀 DocuFlow - Sprint 1 (2 semanas)
+------------------------
+
+📅 Semana 1: Migración y Base
+----------------------------
+
+1️⃣ Día 1-2: Configuración Inicial
+   ✅ Configurar Supabase
+      - Crear proyecto
+      - Configurar autenticación
+      - Diseñar esquema de base de datos
+   
+   ✅ Estructura de Base de Datos
+      ```sql
+      -- Usuarios
+      users
+        id
+        email
+        full_name
+        company_name
+        settings (jsonb)
+        created_at
+      
+      -- Documentos
+      documents
+        id
+        user_id
+        type (invoice/contract/legal)
+        status
+        data (jsonb)
+        created_at
+        updated_at
+      
+      -- Plantillas
+      templates
+        id
+        type
+        name
+        schema (jsonb)
+        is_active
+      ```
+
+2️⃣ Día 3-4: Migración de Autenticación
+   ✅ Implementar Supabase Auth
+      - Login/Registro
+      - Recuperación de contraseña
+      - Perfil de usuario
+   
+   ✅ Migrar datos existentes
+      - Script de migración de usuarios
+      - Script de migración de facturas
+
+3️⃣ Día 5: Dashboard Base
+   ✅ Crear estructura base del dashboard
+      - Layout principal
+      - Navegación
+      - Vista general
+
+📅 Semana 2: Funcionalidades Core
+--------------------------------
+
+1️⃣ Día 6-7: Sistema de Documentos
+   ✅ Adaptar sistema de facturas
+      - Integrar con Supabase
+      - Actualizar generación de PDFs
+      - Migrar plantillas existentes
+
+2️⃣ Día 8-9: Nuevas Plantillas
+   ✅ Implementar sistema base de contratos
+      - Contrato de servicios (primera plantilla)
+      - Sistema de preview
+      - Generación PDF
+
+3️⃣ Día 10: Testing y Optimización
+   ✅ Testing
+      - Pruebas de integración
+      - Pruebas de usuario
+      - Corrección de bugs
+
+🎯 Objetivos del Sprint
+----------------------
+1. Sistema base funcionando con Supabase
+2. Autenticación migrada completamente
+3. Dashboard básico operativo
+4. Una plantilla de contrato funcionando
+5. Sistema de facturas adaptado
+
+📋 Tareas Técnicas Específicas
+----------------------------
+1. Instalar y configurar Supabase Client
+2. Actualizar middleware de autenticación
+3. Crear nuevos hooks para Supabase
+4. Adaptar componentes de formularios
+5. Implementar nuevo sistema de storage
+
+🔍 Puntos de Verificación
+------------------------
+1. ¿Funciona el login/registro?
+2. ¿Se migró correctamente la data existente?
+3. ¿Funciona la generación de PDFs?
+4. ¿El dashboard muestra la información correcta?
+5. ¿Las facturas existentes siguen funcionando?
+
+⚠️ Consideraciones
+----------------
+1. Hacer backup antes de migración
+2. Mantener compatibilidad con documentos existentes
+3. Documentar cambios en la API
+4. Mantener el sistema actual funcionando en paralelo
+5. Planear rollback en caso necesario 

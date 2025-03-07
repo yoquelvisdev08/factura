@@ -50,5 +50,10 @@ backend/node_modules
 backend/dist
 backend/.env
 
+#Frontend
+Frontend/node_modules
+Frontend/dist
+Frontend/.env
+
 # Local files
 *.local
